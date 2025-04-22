@@ -18,7 +18,7 @@ function FeedItem({ post }: FeedItemProps) {
         </Text>
       </View>
       <View style={styles.menuContainer}>
-        // 좋아요
+        {/* 좋아요 */}
         <Pressable style={styles.menu} onPress={() => {}}>
           <Octicons
             name={isLiked ? "heart-fill" : "heart"}
@@ -30,7 +30,7 @@ function FeedItem({ post }: FeedItemProps) {
           </Text>
         </Pressable>
         <Pressable style={styles.menu} onPress={() => {}}>
-          // 댓글
+          {/* 댓글 */}
           <MaterialCommunityIcons
             name="comment-processing-outline"
             size={16}
@@ -39,7 +39,7 @@ function FeedItem({ post }: FeedItemProps) {
           <Text style={styles.menuTexxt}>1</Text>
         </Pressable>
         <Pressable style={styles.menu} onPress={() => {}}>
-          // 조회수
+          {/* 조회수 */}
           <Ionicons name="eye-outline" size={16} color={colors.BLACK} />
           <Text style={styles.menuTexxt}>1</Text>
         </Pressable>
