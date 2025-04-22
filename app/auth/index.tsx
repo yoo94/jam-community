@@ -22,7 +22,7 @@ function AuthScreen({}: indexProps) {
           label="이메일 로그인"
           onPress={() => router.push("/auth/login")}
         />
-        <Link style={styles.signupText} href={"/"}>
+        <Link style={styles.signupText} href={"/auth/signup"}>
           이메일로 가입하기
         </Link>
       </View>
