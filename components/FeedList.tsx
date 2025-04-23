@@ -10,7 +10,7 @@ const dummyData = [
     userId: 1,
     title: "더미제목",
     description: "더미내용",
-    createdAt: "",
+    createdAt: "2025-04-02",
     author: {
       id: 1,
       nickname: "더미이름",
@@ -28,7 +28,7 @@ const dummyData = [
     userId: 1,
     title: "더미제목",
     description: "더미내용",
-    createdAt: "",
+    createdAt: "2025-04-02",
     author: {
       id: 1,
       nickname: "더미이름",
