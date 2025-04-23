@@ -1,4 +1,4 @@
-import FixedBottomCTA from "@/components/\bFixedBottomCTA";
+import FixedBottomCTA from "@/components/FixedBottomCTA";
 import CustomButton from "@/components/CustomButton";
 import InputFeild from "@/components/InputFeild";
 import { colors } from "@/constants";
