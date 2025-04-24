@@ -11,21 +11,34 @@ import {
 interface InputFeildProps extends TextInputProps {
   label: string;
   variant?: "filled" | "outlined" | "standard";
+  error?: string;
 }
 
-function InputField({ label, variant = "filled", ...props }: InputFeildProps) {
+function InputField({
+  label,
+  variant = "filled",
+  error = "",
+  ...props
+}: InputFeildProps) {
   return (
     <View>
       <View>
         <Text style={styles.label}>{label}</Text>
       </View>
-      <View style={[styles.container, styles[variant]]}>
+      <View
+        style={[
+          styles.container,
+          styles[variant],
+          Boolean(error) && styles.inputError,
+        ]}
+      >
         <TextInput
           placeholderTextColor={colors.GREY_500}
           style={styles.input}
           {...props}
         />
       </View>
+      {error.length > 0 && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 }
@@ -48,6 +61,14 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     padding: 6,
+  },
+  error: {
+    color: colors.RED_500,
+    fontSize: 12,
+    marginTop: 5,
+  },
+  inputError: {
+    backgroundColor: colors.RED_100,
   },
 });
 
