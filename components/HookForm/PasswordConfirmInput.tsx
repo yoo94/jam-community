@@ -18,18 +18,17 @@ function PasswordConfirmInput() {
           },
         },
       }}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
+      render={({ field: { ref, onChange, value }, fieldState: { error } }) => (
         <View>
           <InputField
-            label="비밀번호 확인"
-            placeholder="비밀번호를 입력해주세요."
+            ref={ref} //useform에서 관리하는 input 필드의 ref
+            label="입력한 비밀번호 확인"
             onChangeText={onChange} //useform에서 관리하는 input 필드의 값 변경 함수
             value={value} //useform에서 관리하는 input 필드의 값
             error={error?.message} //useform에서 관리하는 input 필드의 에러 메시지
             secureTextEntry={true} //비밀번호 입력 필드
-            autoCorrect={false} //자동 교정 방지
-            textContentType="newPassword" //비밀번호 입력 필드
             returnKeyType="done" //완료 버튼
+            textContentType="oneTimeCode" //비밀번호 자동 완성 방지
           />
         </View>
       )}
