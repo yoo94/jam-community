@@ -17,7 +17,7 @@ async function postLogin(body: RequestUser): Promise<{ accessToken: string }> {
   return data;
 }
 
-async function pgetMe(): Promise<Profile> {
+async function getUserInfo(): Promise<Profile> {
   const accessToekn = await getSecureStore("accessToken");
   if (!accessToekn) {
     throw new Error("Access token not found");
@@ -30,4 +30,4 @@ async function pgetMe(): Promise<Profile> {
   return data;
 }
 
-export { postSignup, postLogin, pgetMe };
+export { postSignup, postLogin, getUserInfo };

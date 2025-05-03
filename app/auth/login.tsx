@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import EmailInput from "@/components/HookForm/EmailInput";
 import PasswordInput from "@/components/HookForm/PasswordInput";
 import PasswordConfirmInput from "@/components/HookForm/PasswordConfirmInput";
+import useAuth from "@/hooks/queries/useAuth";
 
 type FormValues = {
   email: string;
@@ -11,6 +12,8 @@ type FormValues = {
 };
 
 export default function LoginScreen() {
+  const { loginMutation } = useAuth();
+
   const loginForm = useForm<FormValues>({
     defaultValues: {
       email: "",
@@ -18,7 +21,11 @@ export default function LoginScreen() {
     },
   });
   const onsubmit = (FormValues: FormValues) => {
-    console.log(FormValues);
+    const { email, password } = FormValues;
+    loginMutation.mutate({
+      email,
+      password,
+    });
   };
   return (
     <FormProvider {...loginForm}>
