@@ -12,9 +12,9 @@ function DescriptionInput() {
       control={control} //useform에서 관리하는 control 객체
       rules={{
         required: "내용을 입력해주세요.", //useform에서 관리하는 input 필드의 유효성 검사 규칙
-        maxLength: {
+        minLength: {
           value: 5,
-          message: "내용을 5자 이내로 입력해주세요.", //useform에서 관리하는 input 필드의 유효성 검사 규칙
+          message: "내용을 5자 이상으로 입력해주세요.", //useform에서 관리하는 input 필드의 유효성 검사 규칙
         },
       }}
       render={({ field: { ref, onChange, value }, fieldState: { error } }) => (

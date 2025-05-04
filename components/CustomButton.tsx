@@ -4,8 +4,8 @@ import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
 
 interface CustomButtonProps extends PressableProps {
   label: string;
-  size?: "small" | "medium" | "large";
-  variant?: "filled";
+  size?: "medium" | "large";
+  variant?: "standard" | "filled";
 }
 
 function CustomButton({
@@ -20,7 +20,7 @@ function CustomButton({
         styles.container,
         styles[size],
         styles[variant],
-        pressed ? styles.pressed : null,
+        pressed && styles.pressed,
       ]}
       {...props}
     >
@@ -35,18 +35,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  medium: {
-    width: "100%",
-    height: 44,
-  },
   large: {
     width: "100%",
     height: 44,
   },
-  small: {
-    width: "100%",
-    height: 44,
-  },
+  medium: {},
   filled: {
     backgroundColor: colors.ORANGE_600,
     fontSize: 14,
@@ -54,7 +47,12 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
   },
   pressed: {
-    opacity: 0.75,
+    opacity: 0.8,
+  },
+  standard: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: colors.ORANGE_600,
   },
 });
 

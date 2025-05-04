@@ -1,16 +1,32 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUserInfo, postLogin, postSignup } from "@/api/auth";
 import { router } from "expo-router";
-import { deleteSecureStore, savesecureStore } from "@/utills/secureStore";
+import {
+  deleteSecureStore,
+  getSecureStore,
+  savesecureStore,
+} from "@/utills/secureStore";
 import { removeHeader, setHeader } from "@/utills/header";
 import queryClient from "@/api/queryClient";
 import { useEffect } from "react";
+import { set } from "react-hook-form";
 
 function useGetUserInfo() {
-  const { data, isError } = useQuery({
+  const { data, isError, isSuccess } = useQuery({
     queryKey: ["auth", "userInfo"],
     queryFn: getUserInfo,
   });
+
+  useEffect(() => {
+    (async () => {
+      if (isSuccess) {
+        // 데이터를 잘 가져왔을 때
+        const accessToken = await getSecureStore("accessToken");
+        setHeader("Authorization", `Bearer ${accessToken}`);
+      }
+    })();
+  }, [isSuccess]);
+
   useEffect(() => {
     if (isError) {
       // 데이터를 잘못 가져 왔을 때

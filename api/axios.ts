@@ -13,10 +13,3 @@ const axiosInstance = axios.create({
 });
 
 export default axiosInstance;
-
-export const get = (url: string, params?: object) => {
-  return axiosInstance.get(url, { params });
-};
-export const post = (url: string, data?: object) => {
-  return axiosInstance.post(url, data);
-};
