@@ -4,12 +4,15 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { Post } from "@/types";
 import Profile from "./Profile";
+import useAuth from "@/hooks/queries/useAuth";
 interface FeedItemProps {
   post: Post;
 }
 
 function FeedItem({ post }: FeedItemProps) {
-  const isLiked = false;
+  const { userInfo } = useAuth();
+  const likeUsers = post.likes?.map((like) => Number(like.userId));
+  const isLiked = likeUsers?.includes(Number(userInfo?.id));
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -33,7 +36,7 @@ function FeedItem({ post }: FeedItemProps) {
             color={isLiked ? colors.ORANGE_600 : colors.BLACK}
           />
           <Text style={isLiked ? styles.activeMenuTexxt : styles.menuTexxt}>
-            1
+            {post.likes.length || "좋아용"}
           </Text>
         </Pressable>
         <Pressable style={styles.menu} onPress={() => {}}>
@@ -43,12 +46,12 @@ function FeedItem({ post }: FeedItemProps) {
             size={16}
             color={colors.BLACK}
           />
-          <Text style={styles.menuTexxt}>1</Text>
+          <Text style={styles.menuTexxt}>{post.commentCount || "댓글"}</Text>
         </Pressable>
         <Pressable style={styles.menu} onPress={() => {}}>
           {/* 조회수 */}
           <Ionicons name="eye-outline" size={16} color={colors.BLACK} />
-          <Text style={styles.menuTexxt}>1</Text>
+          <Text style={styles.menuTexxt}>{post.viewCount}</Text>
         </Pressable>
       </View>
     </View>

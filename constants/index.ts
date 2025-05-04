@@ -13,4 +13,11 @@ const colors = {
   BLACK: "#000",
 };
 
-export { colors };
+const queryKeys = {
+  POST: "posts",
+  GET_POSTS: "getPosts",
+  AUTH: "auth",
+  USER_INFO: "userInfo",
+};
+
+export { colors, queryKeys };

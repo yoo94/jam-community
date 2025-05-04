@@ -9,11 +9,11 @@ import {
 import { removeHeader, setHeader } from "@/utills/header";
 import queryClient from "@/api/queryClient";
 import { useEffect } from "react";
-import { set } from "react-hook-form";
+import { queryKeys } from "@/constants";
 
 function useGetUserInfo() {
   const { data, isError, isSuccess } = useQuery({
-    queryKey: ["auth", "userInfo"],
+    queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
     queryFn: getUserInfo,
   });
 
@@ -59,7 +59,7 @@ function useLogin() {
       await savesecureStore("accessToken", accessToken);
       //내정보를 가져오는 훅 호출
       queryClient.fetchQuery({
-        queryKey: ["auth", "userInfo"],
+        queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
       });
       router.push("/"); // Redirect to the main page
     },
@@ -73,7 +73,9 @@ function useLogout() {
   return () => {
     removeHeader("Authorization");
     deleteSecureStore("accessToken");
-    queryClient.resetQueries({ queryKey: ["auth", "userInfo"] });
+    queryClient.resetQueries({
+      queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
+    });
     router.push("/auth"); // 로그아웃 후 로그인 페이지로 이동
   };
 }
