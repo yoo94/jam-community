@@ -1,4 +1,4 @@
-import { Link, Stack } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 import React from "react";
 import { Foundation } from "@expo/vector-icons";
 import { colors } from "@/constants";
@@ -20,6 +20,23 @@ export default function postLayout() {
               <Link href={"/"} replace style={{ paddingRight: 10 }}>
                 <Foundation name="arrow-left" size={24} color="black" />
               </Link>
+            );
+          },
+        }}
+      />
+      <Stack.Screen
+        name="update/[id]"
+        options={{
+          title: "글 수정 하기",
+          headerShown: true,
+          headerLeft: () => {
+            return (
+              <Foundation
+                name="arrow-left"
+                size={28}
+                color="black"
+                onPress={() => router.back()}
+              />
             );
           },
         }}

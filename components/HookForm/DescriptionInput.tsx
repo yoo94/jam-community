@@ -8,7 +8,7 @@ function DescriptionInput() {
 
   return (
     <Controller
-      name="Description" //useform에서 관리하는 input 필드 이름
+      name="description" //useform에서 관리하는 input 필드 이름
       control={control} //useform에서 관리하는 control 객체
       rules={{
         required: "내용을 입력해주세요.", //useform에서 관리하는 input 필드의 유효성 검사 규칙

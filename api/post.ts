@@ -14,4 +14,18 @@ async function deletePost(postId: number): Promise<number> {
   return data;
 }
 
-export { createPost, getPosts, deletePost };
+async function getPost(postId: number): Promise<Post> {
+  const { data } = await axiosInstance.get(`posts/${postId}`);
+  return data;
+}
+
+type UpdatePostDto = {
+  postId: number;
+  body: CreatePostDto;
+};
+async function updatePost({ postId, body }: UpdatePostDto): Promise<number> {
+  const { data } = await axiosInstance.patch(`posts/${postId}`, body);
+  return data;
+}
+
+export { createPost, getPosts, deletePost, getPost, updatePost };

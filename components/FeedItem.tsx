@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import useAuth from "@/hooks/queries/useAuth";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import useDeletePost from "@/hooks/queries/useDeletePost";
+import { router } from "expo-router";
 interface FeedItemProps {
   post: Post;
 }
@@ -33,10 +34,9 @@ function FeedItem({ post }: FeedItemProps) {
             break;
           case 1:
             // 수정
+            router.push(`/post/update/${post.id}`);
             break;
           case cancelButtonIndex:
-            // 취소
-
             break;
           default:
             break;
