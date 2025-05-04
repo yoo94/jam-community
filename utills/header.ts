@@ -8,7 +8,6 @@ function setHeader(key: string, value: string) {
 function removeHeader(key: string) {
   // Remove a header for all requests
   if (!axiosInstance.defaults.headers.common[key]) {
-    console.warn(`Header ${key} does not exist.`);
     return;
   }
   delete axiosInstance.defaults.headers.common[key];

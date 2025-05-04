@@ -6,7 +6,7 @@ import "react-native-reanimated";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "@/api/queryClient";
 import useAuth from "@/hooks/queries/useAuth";
-
+import Toast from "react-native-toast-message";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -27,13 +27,23 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <RootNavigation />
+      <Toast />
     </QueryClientProvider>
   );
 }
 
 function RootNavigation() {
-  const { userInfo, loginMutation, signupMutation, logoutMutation } = useAuth();
-  console.log("userInfo", userInfo);
+  const { userInfo } = useAuth();
+  useEffect(() => {
+    if (userInfo.id) {
+      Toast.show({
+        type: "success",
+        text1: `${userInfo.nickname || "회원"}님 환영합니다.`,
+        text2: "welcome to jam community",
+      });
+    }
+  }, [userInfo.id]);
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

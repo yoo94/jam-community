@@ -69,7 +69,7 @@ function useAuth() {
   const signupMutation = useSignup();
   const logout = useLogout();
   return {
-    userInfo: { id: data?.id || "" },
+    userInfo: { id: data?.id || "", nickname: data?.nickname || "" },
     loginMutation,
     signupMutation,
     logout,
