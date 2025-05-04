@@ -36,5 +36,4 @@ function PasswordConfirmInput() {
   );
 }
 
-const styles = StyleSheet.create({});
 export default PasswordConfirmInput;

@@ -28,6 +28,7 @@ function InputField(
           styles.container,
           styles[variant],
           Boolean(error) && styles.inputError,
+          props.multiline && styles.multiline,
         ]}
       >
         <TextInput
@@ -35,10 +36,10 @@ function InputField(
           placeholder={label}
           placeholderTextColor={colors.GREY_500}
           style={styles.input}
-          {...props}
           autoCapitalize="none" //대문자 자동 변환 방지
           spellCheck={false}
           autoCorrect={false} //자동 교정 방지
+          {...props}
         />
       </View>
       {error.length > 0 && <Text style={styles.error}>{error}</Text>}
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     padding: 6,
+    flex: 1,
   },
   error: {
     color: colors.RED_500,
@@ -72,6 +74,11 @@ const styles = StyleSheet.create({
   },
   inputError: {
     backgroundColor: colors.RED_100,
+  },
+  multiline: {
+    alignItems: "flex-start",
+    height: 100,
+    paddingVertical: 10,
   },
 });
 

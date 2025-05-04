@@ -46,5 +46,4 @@ function PasswordInput({
   );
 }
 
-const styles = StyleSheet.create({});
 export default PasswordInput;
