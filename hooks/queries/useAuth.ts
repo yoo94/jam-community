@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 function useGetUserInfo() {
   const { data, isError } = useQuery({
-    queryKey: ["userInfo", "auth"],
+    queryKey: ["auth", "userInfo"],
     queryFn: getUserInfo,
   });
   useEffect(() => {
@@ -16,7 +16,6 @@ function useGetUserInfo() {
       // 데이터를 잘못 가져 왔을 때
       removeHeader("Authorization");
       deleteSecureStore("accessToken");
-      router.push("/auth/login");
     }
   }, [isError]);
   return { data };
@@ -44,7 +43,7 @@ function useLogin() {
       await savesecureStore("accessToken", accessToken);
       //내정보를 가져오는 훅 호출
       queryClient.fetchQuery({
-        queryKey: ["userInfo", "auth"],
+        queryKey: ["auth", "userInfo"],
       });
       router.push("/"); // Redirect to the main page
     },
@@ -55,16 +54,12 @@ function useLogin() {
 }
 
 function useLogout() {
-  return useMutation({
-    mutationFn: postSignup,
-    onSuccess: (data) => {
-      console.log("Logout successful", data);
-      router.push("/auth/login");
-    },
-    onError: (error) => {
-      console.error("Logout failed", error);
-    },
-  });
+  return () => {
+    removeHeader("Authorization");
+    deleteSecureStore("accessToken");
+    queryClient.resetQueries({ queryKey: ["auth", "userInfo"] });
+    router.push("/auth"); // 로그아웃 후 로그인 페이지로 이동
+  };
 }
 
 function useAuth() {
@@ -72,12 +67,12 @@ function useAuth() {
   // 한꺼번에 불러가기 위해 묶음
   const loginMutation = useLogin();
   const signupMutation = useSignup();
-  const logoutMutation = useLogout();
+  const logout = useLogout();
   return {
     userInfo: { id: data?.id || "" },
     loginMutation,
     signupMutation,
-    logoutMutation,
+    logout,
   };
 }
 
