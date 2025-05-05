@@ -6,7 +6,8 @@ import { colors } from "@/constants";
 import useCreateComment from "@/hooks/qureies/UseCreatComment";
 import useGetPost from "@/hooks/qureies/usePost";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { set } from "react-hook-form";
 import {
   Pressable,
   SafeAreaView,
@@ -22,6 +23,7 @@ export default function PostDetailScreen() {
   const { data: post, isPending, isError } = useGetPost(Number(id));
   const createComment = useCreateComment();
   const [content, setContent] = useState("");
+  const scrollViewRef = useRef<ScrollView>(null);
   if (isPending || isError) {
     return <></>;
   }
@@ -33,6 +35,9 @@ export default function PostDetailScreen() {
     createComment.mutate(commentData, {
       onSuccess: () => {
         setContent("");
+        setTimeout(() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 300);
       },
     });
   };
@@ -42,7 +47,11 @@ export default function PostDetailScreen() {
         <KeyboardAwareScrollView
           contentContainerStyle={styles.awareScrollViewContainer}
         >
-          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          <ScrollView
+            ref={scrollViewRef}
+            style={{ marginBottom: 90 }}
+            contentContainerStyle={styles.scrollViewContainer}
+          >
             <View style={{ marginTop: 12 }}>
               <FeedItem post={post} isDetail />
               <Text style={styles.commentCount}>
