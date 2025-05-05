@@ -4,9 +4,9 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { Post } from "@/types";
 import Profile from "./Profile";
-import useAuth from "@/hooks/queries/useAuth";
+import useAuth from "@/hooks/qureies/useAuth";
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import useDeletePost from "@/hooks/queries/useDeletePost";
+import useDeletePost from "@/hooks/qureies/useDeletePost";
 import { router } from "expo-router";
 interface FeedItemProps {
   post: Post;
@@ -31,7 +31,15 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
         switch (selectedIndex) {
           case destructiveButtonIndex:
             // 삭제
-            deletePost.mutate(post.id);
+            deletePost.mutate(post.id, {
+              onSuccess: () => {
+                isDetail && router.replace("/"); // 삭제 후 홈으로 이동
+              },
+              onError: (error) => {
+                console.error("Error deleting post:", error);
+              },
+            });
+
             break;
           case 1:
             // 수정
@@ -62,7 +70,7 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
             imageUri={post.author.imageUri}
             nickname={post.author.nickname}
             createAt={post.createdAt}
-            optoin={
+            option={
               post.author.id === userInfo?.id && (
                 <Ionicons
                   name="ellipsis-vertical"

@@ -1,5 +1,5 @@
 import AuthRouter from "@/components/AuthRouter";
-import useAuth from "@/hooks/queries/useAuth";
+import useAuth from "@/hooks/qureies/useAuth";
 import { SafeAreaView, Text } from "react-native";
 
 export default function SettingScreen() {

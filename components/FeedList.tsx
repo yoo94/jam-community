@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native";
 import FeedItem from "./FeedItem";
 import { colors } from "@/constants";
-import useGetInfinitePosts from "@/hooks/queries/useInfinitePosts";
+import useGetInfinitePosts from "@/hooks/qureies/useInfinitePosts";
 import { useScrollToTop } from "@react-navigation/native";
 
 function FeedList() {

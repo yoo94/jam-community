@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import EmailInput from "@/components/HookForm/EmailInput";
 import PasswordInput from "@/components/HookForm/PasswordInput";
 import PasswordConfirmInput from "@/components/HookForm/PasswordConfirmInput";
-import useAuth from "@/hooks/queries/useAuth";
+import useAuth from "@/hooks/qureies/useAuth";
 
 type FormValues = {
   email: string;

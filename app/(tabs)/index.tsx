@@ -1,6 +1,6 @@
 import FeedList from "@/components/FeedList";
 import { colors } from "@/constants";
-import useAuth from "@/hooks/queries/useAuth";
+import useAuth from "@/hooks/qureies/useAuth";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, SafeAreaView, StyleSheet } from "react-native";

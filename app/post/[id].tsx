@@ -1,9 +1,12 @@
 import AuthRoute from "@/components/AuthRouter";
+import CommentItem from "@/components/CommentItem";
 import FeedItem from "@/components/FeedItem";
 import InputField from "@/components/InputField";
 import { colors } from "@/constants";
-import useGetPost from "@/hooks/queries/usePost";
+import useCreateComment from "@/hooks/qureies/UseCreatComment";
+import useGetPost from "@/hooks/qureies/usePost";
 import { useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -17,11 +20,22 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function PostDetailScreen() {
   const { id } = useLocalSearchParams();
   const { data: post, isPending, isError } = useGetPost(Number(id));
-
+  const createComment = useCreateComment();
+  const [content, setContent] = useState("");
   if (isPending || isError) {
     return <></>;
   }
-
+  const handleSubmitComment = () => {
+    const commentData = {
+      postId: Number(id),
+      content: content,
+    };
+    createComment.mutate(commentData, {
+      onSuccess: () => {
+        setContent("");
+      },
+    });
+  };
   return (
     <AuthRoute>
       <SafeAreaView style={styles.container}>
@@ -35,13 +49,24 @@ export default function PostDetailScreen() {
                 댓글 {post.commentCount}개
               </Text>
             </View>
+            {post.comments?.map((comment) => (
+              <CommentItem comment={comment} key={comment.id} />
+            ))}
           </ScrollView>
 
           <View style={styles.commentInputContainer}>
             <InputField
               label="댓글을 입력하세요"
+              value={content}
+              returnKeyType="send"
+              onChangeText={(text) => setContent(text)}
+              onSubmitEditing={handleSubmitComment}
               rightChild={
-                <Pressable style={styles.inputButtonContainer}>
+                <Pressable
+                  disabled={!content}
+                  style={styles.inputButtonContainer}
+                  onPress={handleSubmitComment}
+                >
                   <Text style={styles.inputButtonText}>등록</Text>
                 </Pressable>
               }

@@ -11,7 +11,7 @@ interface ProfileProps {
   imageUri?: string;
   nickname: string;
   createAt: string;
-  optoin?: ReactNode;
+  option?: ReactNode;
 }
 
 function Profile({
@@ -19,7 +19,7 @@ function Profile({
   imageUri,
   nickname,
   createAt,
-  optoin,
+  option,
 }: ProfileProps) {
   return (
     <View style={styles.container}>
@@ -37,7 +37,7 @@ function Profile({
           <Text style={styles.createAt}>{dayjs(createAt).fromNow()}</Text>
         </View>
       </Pressable>
-      {optoin}
+      {option}
     </View>
   );
 }

@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
-import useCreatePost from "@/hooks/queries/useCreatePost";
+import useCreatePost from "@/hooks/qureies/useCreatePost";
 import { ImageUri } from "@/types";
 import CustomButton from "@/components/CustomButton";
 import { useNavigation } from "expo-router";

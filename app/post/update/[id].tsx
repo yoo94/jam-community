@@ -7,8 +7,8 @@ import { StyleSheet } from "react-native";
 import { ImageUri } from "@/types";
 import CustomButton from "@/components/CustomButton";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import useGetPost from "@/hooks/queries/usePost";
-import useUpdatePost from "@/hooks/queries/useUpdatePost";
+import useGetPost from "@/hooks/qureies/usePost";
+import useUpdatePost from "@/hooks/qureies/useUpdatePost";
 
 interface FormValues {
   title: string;

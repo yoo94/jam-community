@@ -1,7 +1,7 @@
 import React, { Children } from "react";
 import { StyleSheet, View } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import useAuth from "@/hooks/queries/useAuth";
+import useAuth from "@/hooks/qureies/useAuth";
 
 interface AuthRouterProps {
   children: React.ReactNode;
