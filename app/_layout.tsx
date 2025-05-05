@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import "react-native-reanimated";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "@/api/queryClient";
 import useAuth from "@/hooks/qureies/useAuth";
 import Toast from "react-native-toast-message";
@@ -12,6 +12,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useReactQueryDevTools(queryClient);
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -57,4 +58,7 @@ function RootNavigation() {
       <Stack.Screen name="+not-found" />
     </Stack>
   );
+}
+function useReactQueryDevTools(queryClient: QueryClient) {
+  throw new Error("Function not implemented.");
 }
