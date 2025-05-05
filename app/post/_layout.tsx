@@ -41,6 +41,25 @@ export default function postLayout() {
           },
         }}
       />
+      <Stack.Screen
+        name="[id]"
+        options={{
+          title: "",
+          headerShown: true,
+          headerLeft: () => {
+            return (
+              <Foundation
+                name="arrow-left"
+                size={28}
+                color="black"
+                onPress={() =>
+                  router.canGoBack() ? router.back() : router.replace("/")
+                }
+              />
+            );
+          },
+        }}
+      />
     </Stack>
   );
 }

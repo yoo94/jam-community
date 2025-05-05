@@ -10,9 +10,10 @@ import useDeletePost from "@/hooks/queries/useDeletePost";
 import { router } from "expo-router";
 interface FeedItemProps {
   post: Post;
+  isDetail?: boolean;
 }
 
-function FeedItem({ post }: FeedItemProps) {
+function FeedItem({ post, isDetail = false }: FeedItemProps) {
   const { userInfo } = useAuth();
   const likeUsers = post.likes?.map((like) => Number(like.userId));
   const isLiked = likeUsers?.includes(Number(userInfo?.id));
@@ -45,58 +46,67 @@ function FeedItem({ post }: FeedItemProps) {
     );
   };
 
+  //상세페이지 관련
+  const handlePressPost = () => {
+    if (isDetail) return; // 피드 아이템이 상세 스크린에서 보이는지 아닌지
+    router.push(`/post/${post.id}`);
+  };
+  const ContainerComponent = isDetail ? View : Pressable;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Profile
-          onPress={() => {}}
-          imageUri={post.author.imageUri}
-          nickname={post.author.nickname}
-          createAt={post.createdAt}
-          optoin={
-            post.author.id === userInfo?.id && (
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={colors.BLACK}
-                onPress={handlePressOption}
-              />
-            )
-          }
-        />
-        <Text style={styles.title}>{post.title}</Text>
-        <Text numberOfLines={3} style={styles.description}>
-          {post.description}
-        </Text>
-      </View>
-      <View style={styles.menuContainer}>
-        {/* 좋아요 */}
-        <Pressable style={styles.menu} onPress={() => {}}>
-          <Octicons
-            name={isLiked ? "heart-fill" : "heart"}
-            size={16}
-            color={isLiked ? colors.ORANGE_600 : colors.BLACK}
+    <ContainerComponent style={styles.container} onPress={handlePressPost}>
+      <View>
+        <View style={styles.contentContainer}>
+          <Profile
+            onPress={() => {}}
+            imageUri={post.author.imageUri}
+            nickname={post.author.nickname}
+            createAt={post.createdAt}
+            optoin={
+              post.author.id === userInfo?.id && (
+                <Ionicons
+                  name="ellipsis-vertical"
+                  size={24}
+                  color={colors.BLACK}
+                  onPress={handlePressOption}
+                />
+              )
+            }
           />
-          <Text style={isLiked ? styles.activeMenuTexxt : styles.menuTexxt}>
-            {post.likes.length || "좋아용"}
+          <Text style={styles.title}>{post.title}</Text>
+          <Text numberOfLines={3} style={styles.description}>
+            {post.description}
           </Text>
-        </Pressable>
-        <Pressable style={styles.menu} onPress={() => {}}>
-          {/* 댓글 */}
-          <MaterialCommunityIcons
-            name="comment-processing-outline"
-            size={16}
-            color={colors.BLACK}
-          />
-          <Text style={styles.menuTexxt}>{post.commentCount || "댓글"}</Text>
-        </Pressable>
-        <Pressable style={styles.menu} onPress={() => {}}>
-          {/* 조회수 */}
-          <Ionicons name="eye-outline" size={16} color={colors.BLACK} />
-          <Text style={styles.menuTexxt}>{post.viewCount}</Text>
-        </Pressable>
+        </View>
+        <View style={styles.menuContainer}>
+          {/* 좋아요 */}
+          <Pressable style={styles.menu} onPress={() => {}}>
+            <Octicons
+              name={isLiked ? "heart-fill" : "heart"}
+              size={16}
+              color={isLiked ? colors.ORANGE_600 : colors.BLACK}
+            />
+            <Text style={isLiked ? styles.activeMenuTexxt : styles.menuTexxt}>
+              {post.likes.length || "좋아용"}
+            </Text>
+          </Pressable>
+          <Pressable style={styles.menu} onPress={() => {}}>
+            {/* 댓글 */}
+            <MaterialCommunityIcons
+              name="comment-processing-outline"
+              size={16}
+              color={colors.BLACK}
+            />
+            <Text style={styles.menuTexxt}>{post.commentCount || "댓글"}</Text>
+          </Pressable>
+          <Pressable style={styles.menu} onPress={() => {}}>
+            {/* 조회수 */}
+            <Ionicons name="eye-outline" size={16} color={colors.BLACK} />
+            <Text style={styles.menuTexxt}>{post.viewCount}</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </ContainerComponent>
   );
 }
 
