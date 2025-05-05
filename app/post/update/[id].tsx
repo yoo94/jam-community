@@ -25,11 +25,22 @@ function PostWriteScreen() {
 
   const postForm = useForm<FormValues>({
     defaultValues: {
-      title: post?.title,
-      description: post?.description,
+      title: "",
+      description: "",
       imageUris: [],
     },
   });
+
+  // post 데이터가 로드되면 폼을 재설정
+  useEffect(() => {
+    if (post) {
+      postForm.reset({
+        title: post.title,
+        description: post.description,
+        imageUris: [], // 필요하다면 post의 이미지 데이터로 업데이트
+      });
+    }
+  }, [post]);
   const onSubmit = (formValues: FormValues) => {
     updatePost.mutate(
       { postId: Number(id), body: formValues },
