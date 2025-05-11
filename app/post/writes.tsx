@@ -8,6 +8,7 @@ import useCreatePost from "@/hooks/qureies/useCreatePost";
 import { ImageUri } from "@/types";
 import CustomButton from "@/components/CustomButton";
 import { useNavigation } from "expo-router";
+import PostWriteFooter from "@/components/PostWriteFooter";
 
 interface FormValues {
   title: string;
@@ -47,6 +48,7 @@ function PostWriteScreen() {
         <TitleInput />
         <DescriptionInput />
       </FormProvider>
+      <PostWriteFooter />
     </KeyboardAwareScrollView>
   );
 }
