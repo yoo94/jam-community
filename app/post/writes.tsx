@@ -9,6 +9,7 @@ import { ImageUri } from "@/types";
 import CustomButton from "@/components/CustomButton";
 import { useNavigation } from "expo-router";
 import PostWriteFooter from "@/components/PostWriteFooter";
+import ImagePreviewList from "@/components/imagePreviewList";
 
 interface FormValues {
   title: string;
@@ -43,13 +44,14 @@ function PostWriteScreen() {
   }, []);
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
-      <FormProvider {...postForm}>
+    <FormProvider {...postForm}>
+      <KeyboardAwareScrollView style={styles.container}>
         <TitleInput />
         <DescriptionInput />
-      </FormProvider>
+        <ImagePreviewList imageUris={postForm.watch().imageUris} />
+      </KeyboardAwareScrollView>
       <PostWriteFooter />
-    </KeyboardAwareScrollView>
+    </FormProvider>
   );
 }
 const styles = StyleSheet.create({

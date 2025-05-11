@@ -8,6 +8,7 @@ import useAuth from "@/hooks/qureies/useAuth";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import useDeletePost from "@/hooks/qureies/useDeletePost";
 import { router } from "expo-router";
+import ImagePreviewList from "./imagePreviewList";
 interface FeedItemProps {
   post: Post;
   isDetail?: boolean;
@@ -85,6 +86,7 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
           <Text numberOfLines={3} style={styles.description}>
             {post.description}
           </Text>
+          <ImagePreviewList imageUris={post.imageUris} />
         </View>
         <View style={styles.menuContainer}>
           {/* 좋아요 */}

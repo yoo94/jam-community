@@ -9,6 +9,8 @@ import CustomButton from "@/components/CustomButton";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import useGetPost from "@/hooks/qureies/usePost";
 import useUpdatePost from "@/hooks/qureies/useUpdatePost";
+import ImagePreviewList from "@/components/imagePreviewList";
+import PostWriteFooter from "@/components/PostWriteFooter";
 
 interface FormValues {
   title: string;
@@ -37,7 +39,7 @@ function PostWriteScreen() {
       postForm.reset({
         title: post.title,
         description: post.description,
-        imageUris: [], // 필요하다면 post의 이미지 데이터로 업데이트
+        imageUris: post.imageUris, // 필요하다면 post의 이미지 데이터로 업데이트
       });
     }
   }, [post]);
@@ -63,12 +65,14 @@ function PostWriteScreen() {
   }, []);
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
-      <FormProvider {...postForm}>
+    <FormProvider {...postForm}>
+      <KeyboardAwareScrollView style={styles.container}>
         <TitleInput />
         <DescriptionInput />
-      </FormProvider>
-    </KeyboardAwareScrollView>
+        <ImagePreviewList imageUris={postForm.watch().imageUris} />
+      </KeyboardAwareScrollView>
+      <PostWriteFooter />
+    </FormProvider>
   );
 }
 const styles = StyleSheet.create({
