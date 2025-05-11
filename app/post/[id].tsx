@@ -6,14 +6,15 @@ import { colors } from "@/constants";
 import useCreateComment from "@/hooks/qureies/UseCreatComment";
 import useGetPost from "@/hooks/qureies/usePost";
 import { useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
-import { set } from "react-hook-form";
+import { Fragment, useRef, useState } from "react";
 import {
+  Keyboard,
   Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -24,6 +25,9 @@ export default function PostDetailScreen() {
   const createComment = useCreateComment();
   const [content, setContent] = useState("");
   const scrollViewRef = useRef<ScrollView>(null);
+  const inputRef = useRef<TextInput | null>(null);
+  const [parentCommentId, setParentCommentId] = useState<number | null>(null);
+
   if (isPending || isError) {
     return <></>;
   }
@@ -32,6 +36,13 @@ export default function PostDetailScreen() {
       postId: Number(id),
       content: content,
     };
+    if (parentCommentId) {
+      createComment.mutate({ ...commentData, parentCommentId });
+      setContent("");
+      handleCancelReply();
+      return;
+    }
+
     createComment.mutate(commentData, {
       onSuccess: () => {
         setContent("");
@@ -40,6 +51,16 @@ export default function PostDetailScreen() {
         }, 300);
       },
     });
+  };
+
+  const handleReply = (commentId: number) => {
+    setParentCommentId(commentId);
+    inputRef.current?.focus();
+  };
+  const handleCancelReply = () => {
+    setParentCommentId(null);
+    Keyboard.dismiss();
+    setContent("");
   };
   return (
     <AuthRoute>
@@ -59,13 +80,24 @@ export default function PostDetailScreen() {
               </Text>
             </View>
             {post.comments?.map((comment) => (
-              <CommentItem comment={comment} key={comment.id} />
+              <Fragment key={comment.id}>
+                <CommentItem
+                  comment={comment}
+                  parentCommentId={parentCommentId}
+                  onReply={() => handleReply(comment.id)}
+                  onCancelReply={handleCancelReply}
+                />
+                {comment.replies?.map((reply) => (
+                  <CommentItem key={reply.id} comment={reply} isReply />
+                ))}
+              </Fragment>
             ))}
           </ScrollView>
 
           <View style={styles.commentInputContainer}>
             <InputField
-              label="댓글을 입력하세요"
+              ref={inputRef}
+              label={parentCommentId ? "답글 남기기" : "댓글 남기기"}
               value={content}
               returnKeyType="send"
               onChangeText={(text) => setContent(text)}

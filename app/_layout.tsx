@@ -12,7 +12,6 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  useReactQueryDevTools(queryClient);
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
