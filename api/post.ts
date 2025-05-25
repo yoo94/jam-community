@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import { CreatePostDto, Post } from "../types";
+import { CreatePostDto, CreateVoteDto, Post, VoteOption } from "../types";
 async function createPost(body: CreatePostDto) {
   const { data } = await axiosInstance.post("posts", body);
   return data;
@@ -28,4 +28,15 @@ async function updatePost({ postId, body }: UpdatePostDto): Promise<number> {
   return data;
 }
 
-export { createPost, getPosts, deletePost, getPost, updatePost };
+async function createVote({
+  postId,
+  voteOptionId,
+}: CreateVoteDto): Promise<{ postId: number; voteOption: VoteOption }> {
+  const { data } = await axiosInstance.post(
+    `/posts/${postId}/vote/${voteOptionId}`
+  );
+
+  return data;
+}
+
+export { createPost, getPosts, deletePost, getPost, updatePost, createVote };

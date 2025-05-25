@@ -9,6 +9,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import useDeletePost from "@/hooks/qureies/useDeletePost";
 import { router } from "expo-router";
 import ImagePreviewList from "./imagePreviewList";
+import Votes from "./Votes";
 interface FeedItemProps {
   post: Post;
   isDetail?: boolean;
@@ -87,6 +88,26 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
             {post.description}
           </Text>
           <ImagePreviewList imageUris={post.imageUris} />
+          {!isDetail && post.hasVote && (
+            <View style={styles.voteContainer}>
+              <View style={styles.votesTextContainer}>
+                <MaterialCommunityIcons
+                  name="vote"
+                  size={24}
+                  color={colors.ORANGE_600}
+                />
+                <Text style={styles.voteCountText}>투표</Text>
+              </View>
+              <Text>{post.voteCount}명 참여중</Text>
+            </View>
+          )}
+          {isDetail && post.hasVote && (
+            <Votes
+              voteCount={post.voteCount}
+              postId={post.id}
+              postVotes={post.votes ?? []}
+            />
+          )}
         </View>
         <View style={styles.menuContainer}>
           {/* 좋아요 */}
@@ -153,6 +174,33 @@ const styles = StyleSheet.create({
   activeMenuTexxt: {
     fontWeight: "500",
     color: colors.ORANGE_600,
+  },
+  voteContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 14,
+    gap: 16,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: colors.ORANGE_600,
+    backgroundColor: colors.ORANGE_100,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  votesTextContainer: {
+    gap: 6,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  voteText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: colors.ORANGE_600,
+  },
+  voteCountText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: colors.BLACK,
   },
 });
 
