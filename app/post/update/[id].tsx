@@ -11,10 +11,13 @@ import useGetPost from "@/hooks/qureies/usePost";
 import useUpdatePost from "@/hooks/qureies/useUpdatePost";
 import ImagePreviewList from "@/components/imagePreviewList";
 import PostWriteFooter from "@/components/PostWriteFooter";
+import VoteAttached from "@/components/VoteAttached";
+import VoteModal from "@/components/VoteModal";
 
 interface FormValues {
   title: string;
   description: string;
+  isVoteAttached: boolean;
   imageUris: ImageUri[];
 }
 
@@ -29,6 +32,7 @@ function PostWriteScreen() {
     defaultValues: {
       title: "",
       description: "",
+      isVoteAttached: false,
       imageUris: [],
     },
   });
@@ -39,6 +43,7 @@ function PostWriteScreen() {
       postForm.reset({
         title: post.title,
         description: post.description,
+        isVoteAttached: post.hasVote,
         imageUris: post.imageUris, // 필요하다면 post의 이미지 데이터로 업데이트
       });
     }
@@ -70,8 +75,10 @@ function PostWriteScreen() {
         <TitleInput />
         <DescriptionInput />
         <ImagePreviewList imageUris={postForm.watch().imageUris} />
+        <VoteAttached />
       </KeyboardAwareScrollView>
       <PostWriteFooter />
+      <VoteModal />
     </FormProvider>
   );
 }

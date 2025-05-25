@@ -5,16 +5,21 @@ import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import useCreatePost from "@/hooks/qureies/useCreatePost";
-import { ImageUri } from "@/types";
+import { ImageUri, VoteOption } from "@/types";
 import CustomButton from "@/components/CustomButton";
 import { useNavigation } from "expo-router";
 import PostWriteFooter from "@/components/PostWriteFooter";
 import ImagePreviewList from "@/components/imagePreviewList";
+import VoteModal from "@/components/VoteModal";
+import VoteAttached from "@/components/VoteAttached";
 
 interface FormValues {
   title: string;
   description: string;
   imageUris: ImageUri[];
+  isVoteOpen?: boolean;
+  voteOptions: VoteOption[];
+  isVoteAttached?: boolean;
 }
 
 function PostWriteScreen() {
@@ -25,6 +30,9 @@ function PostWriteScreen() {
       title: "",
       description: "",
       imageUris: [],
+      isVoteOpen: false,
+      voteOptions: [{ displayPriority: 0, content: "" }],
+      isVoteAttached: false,
     },
   });
   const onSubmit = (formValues: FormValues) => {
@@ -48,9 +56,11 @@ function PostWriteScreen() {
       <KeyboardAwareScrollView style={styles.container}>
         <TitleInput />
         <DescriptionInput />
+        <VoteAttached />
         <ImagePreviewList imageUris={postForm.watch().imageUris} />
       </KeyboardAwareScrollView>
       <PostWriteFooter />
+      <VoteModal />
     </FormProvider>
   );
 }

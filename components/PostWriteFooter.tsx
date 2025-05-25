@@ -1,5 +1,9 @@
 import { colors } from "@/constants";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import React from "react";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,9 +12,7 @@ import useUploadImages from "@/hooks/qureies/useUploadImages";
 import { getFormDataImages } from "@/utills/image";
 import { useFormContext, useWatch } from "react-hook-form";
 
-interface PostWriteFooterProps {}
-
-function PostWriteFooter({}: PostWriteFooterProps) {
+function PostWriteFooter() {
   const inset = useSafeAreaInsets();
   const { control, setValue } = useFormContext();
   const [imageUris] = useWatch({
@@ -47,6 +49,12 @@ function PostWriteFooter({}: PostWriteFooterProps) {
     <View style={[styles.container, { paddingBottom: inset.bottom }]}>
       <Pressable style={styles.footerIcon} onPress={handleOpenImagePicker}>
         <Ionicons name={"camera"} size={20} color={colors.BLACK} />
+      </Pressable>
+      <Pressable
+        onPress={() => setValue("isVoteOpen", true)}
+        style={styles.footerIcon}
+      >
+        <MaterialCommunityIcons name={"vote"} size={20} color={colors.BLACK} />
       </Pressable>
     </View>
   );

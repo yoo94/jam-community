@@ -35,14 +35,14 @@ function InputField(
           styles.container,
           styles[variant],
           Boolean(error) && styles.inputError,
-          props.multiline && styles.multiline,
+          props.multiline && styles.multiLine,
         ]}
       >
         <TextInput
           ref={ref}
           placeholder={label}
           placeholderTextColor={colors.GREY_500}
-          style={styles.input}
+          style={[styles.input, styles[`${variant}Text`]]}
           autoCapitalize="none" //대문자 자동 변환 방지
           spellCheck={false}
           autoCorrect={false} //자동 교정 방지
@@ -56,37 +56,57 @@ function InputField(
 }
 
 const styles = StyleSheet.create({
-  label: { color: colors.GREY_700, fontSize: 12, marginBottom: 5 },
   container: {
     height: 44,
     borderRadius: 8,
+    paddingHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 10,
     flexDirection: "row",
+  },
+  label: {
+    fontSize: 12,
+    color: colors.GREY_700,
+    marginBottom: 5,
   },
   filled: {
     backgroundColor: colors.GREY_100,
   },
-  outlined: {},
-  standard: {},
+  standard: {
+    borderWidth: 1,
+    borderColor: colors.GREY_200,
+  },
+  outlined: {
+    borderWidth: 1,
+    borderColor: colors.ORANGE_600,
+  },
+  standardText: {
+    color: colors.BLACK,
+  },
+  outlinedText: {
+    color: colors.ORANGE_600,
+    fontWeight: "bold",
+  },
+  filledText: {
+    color: colors.BLACK,
+  },
   input: {
     fontSize: 16,
-    padding: 6,
+    padding: 0,
     flex: 1,
   },
   error: {
-    color: colors.RED_500,
     fontSize: 12,
     marginTop: 5,
+    color: colors.RED_500,
   },
   inputError: {
     backgroundColor: colors.RED_100,
   },
-  multiline: {
+  multiLine: {
     alignItems: "flex-start",
-    height: 100,
     paddingVertical: 10,
+    height: 200,
   },
 });
 
