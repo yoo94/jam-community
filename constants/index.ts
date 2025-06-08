@@ -1,6 +1,8 @@
 const colors = {
   WHITE: "#FFF",
   ORANGE_100: "#FFF7F1",
+  ORANGE_200: "#FFDEC6",
+  ORANGE_300: "#FFB884",
   ORANGE_600: "#FF6B57",
   RED_100: "#FFDFDF",
   RED_500: "#FF5F5F",
@@ -20,6 +22,9 @@ const queryKeys = {
   GET_POSTS: "getPosts",
   AUTH: "auth",
   USER_INFO: "userInfo",
+  GET_POST: "getPost",
+  GET_LIKED_POSTS: "getLikedPosts",
+  GET_MY_POSTS: "getMyPosts",
 };
 
 export { colors, queryKeys };

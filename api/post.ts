@@ -18,6 +18,17 @@ async function getPost(postId: number): Promise<Post> {
   const { data } = await axiosInstance.get(`posts/${postId}`);
   return data;
 }
+async function getMyPosts(page = 1): Promise<Post[]> {
+  const { data } = await axiosInstance.get(`/posts/my?page=${page}`);
+
+  return data;
+}
+
+async function getLikedPosts(page = 1): Promise<Post[]> {
+  const { data } = await axiosInstance.get(`/likes?page=${page}`);
+
+  return data;
+}
 
 type UpdatePostDto = {
   postId: number;
@@ -48,6 +59,8 @@ async function likePost(id: number): Promise<number> {
 export {
   createPost,
   getPosts,
+  getMyPosts,
+  getLikedPosts,
   deletePost,
   getPost,
   updatePost,
