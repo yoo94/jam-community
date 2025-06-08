@@ -39,7 +39,7 @@ export default function ProfileScreen() {
                     Platform.OS === "ios" ? baseUrls.ios : baseUrls.android
                   }/${imageUri}`,
                 }
-              : require("@/assets/images/default-avatar.png")
+              : require("@/assets/images/default-profile.png")
           }
           style={styles.avatar}
         />

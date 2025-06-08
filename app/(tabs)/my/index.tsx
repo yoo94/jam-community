@@ -16,6 +16,7 @@ import useAuth from "@/hooks/qureies/useAuth";
 import PagerView from "react-native-pager-view";
 import MyFeedList from "@/components/MyFeedList";
 import LikedFeedList from "@/components/LikedFeedList";
+import { router } from "expo-router";
 
 export default function MyScreen() {
   const { userInfo } = useAuth();
@@ -37,7 +38,7 @@ export default function MyScreen() {
                     Platform.OS === "ios" ? baseUrls.ios : baseUrls.android
                   }/${userInfo.imageUri}`,
                 }
-              : require("@/assets/images/default-avatar.png")
+              : require("@/assets/images/default-profile.png")
           }
           style={styles.avatar}
         />
@@ -45,6 +46,7 @@ export default function MyScreen() {
           size="medium"
           label="프로필 편집"
           style={{ position: "absolute", right: 16, bottom: 16 }}
+          onPress={() => router.push("/profile/update")}
         />
       </View>
       <View style={styles.container}>
