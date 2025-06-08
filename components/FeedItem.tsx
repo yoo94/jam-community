@@ -10,6 +10,7 @@ import useDeletePost from "@/hooks/qureies/useDeletePost";
 import { router } from "expo-router";
 import ImagePreviewList from "./imagePreviewList";
 import Votes from "./Votes";
+import useLikePost from "@/hooks/qureies/useLikePost";
 interface FeedItemProps {
   post: Post;
   isDetail?: boolean;
@@ -21,6 +22,7 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
   const isLiked = likeUsers?.includes(Number(userInfo?.id));
   const { showActionSheetWithOptions } = useActionSheet();
   const deletePost = useDeletePost();
+  const likePost = useLikePost();
 
   const handlePressOption = () => {
     const options = ["삭제", "수정", "취소"];
@@ -56,15 +58,28 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
     );
   };
 
-  //상세페이지 관련
-  const handlePressPost = () => {
-    if (isDetail) return; // 피드 아이템이 상세 스크린에서 보이는지 아닌지
-    router.push(`/post/${post.id}`);
+  const handlePressFeed = () => {
+    if (!isDetail) {
+      router.push(`/post/${post.id}`);
+    }
   };
-  const ContainerComponent = isDetail ? View : Pressable;
 
+  const handlePressLike = () => {
+    if (!userInfo.id) {
+      router.push("/auth");
+      return;
+    }
+    if (!isDetail) {
+      router.push(`/post/${post.id}`);
+      return;
+    }
+
+    likePost.mutate(post.id);
+  };
+
+  const ContainerComponent = isDetail ? View : Pressable;
   return (
-    <ContainerComponent style={styles.container} onPress={handlePressPost}>
+    <ContainerComponent style={styles.container} onPress={handlePressFeed}>
       <View>
         <View style={styles.contentContainer}>
           <Profile
@@ -111,7 +126,7 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
         </View>
         <View style={styles.menuContainer}>
           {/* 좋아요 */}
-          <Pressable style={styles.menu} onPress={() => {}}>
+          <Pressable style={styles.menu} onPress={handlePressLike}>
             <Octicons
               name={isLiked ? "heart-fill" : "heart"}
               size={16}
@@ -121,7 +136,7 @@ function FeedItem({ post, isDetail = false }: FeedItemProps) {
               {post.likes.length || "좋아용"}
             </Text>
           </Pressable>
-          <Pressable style={styles.menu} onPress={() => {}}>
+          <Pressable style={styles.menu} onPress={handlePressFeed}>
             {/* 댓글 */}
             <MaterialCommunityIcons
               name="comment-processing-outline"
