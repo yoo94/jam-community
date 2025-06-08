@@ -1,44 +1,54 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import FeedItem from "./FeedItem";
 import { colors } from "@/constants";
-import useGetInfinitePosts from "@/hooks/qureies/useInfinitePosts";
 import { useScrollToTop } from "@react-navigation/native";
+import useGetInfiniteUserPosts from "@/hooks/qureies/useGetInfiniteUserPosts";
 
-function FeedList() {
+interface UserFeedListProps {
+  userId: number;
+}
+
+function UserFeedList({ userId }: UserFeedListProps) {
   const {
     data: posts,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     refetch,
-  } = useGetInfinitePosts();
+  } = useGetInfiniteUserPosts(userId);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const ref = useRef<FlatList>(null);
+  const ref = useRef<FlatList | null>(null);
   useScrollToTop(ref);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  };
 
   const handleEndReached = () => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   };
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await refetch();
-    setIsRefreshing(false);
-  };
+
   return (
     <FlatList
       ref={ref}
       data={posts?.pages.flat()}
       renderItem={({ item }) => <FeedItem post={item} />}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => String(item.id)}
       contentContainerStyle={styles.contentContainer}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.5}
       refreshing={isRefreshing}
       onRefresh={handleRefresh}
+      ListEmptyComponent={
+        <View style={styles.emptyContainer}>
+          <Text>작성한 글이 없습니다.</Text>
+        </View>
+      }
     />
   );
 }
@@ -49,6 +59,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GREY_200,
     gap: 12,
   },
+  emptyContainer: {
+    backgroundColor: colors.WHITE,
+    padding: 16,
+    alignItems: "center",
+  },
 });
 
-export default FeedList;
+export default UserFeedList;

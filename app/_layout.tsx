@@ -52,6 +52,7 @@ function RootNavigation() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
       {/* 중첩된 헤더 없애줌 */}
       <Stack.Screen name="post" options={{ headerShown: false }} />
       <Stack.Screen name="imagePreview" options={{ headerShown: false }} />
