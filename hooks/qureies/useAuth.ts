@@ -1,26 +1,25 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUserInfo, postLogin, postSignup } from "@/api/auth";
-import { router } from "expo-router";
+import { editProfile, getUserInfo, postLogin, postSignup } from "@/api/auth";
+import queryClient from "@/api/queryClient";
+import { queryKeys } from "@/constants";
+import { removeHeader, setHeader } from "@/utills/header";
 import {
   deleteSecureStore,
   getSecureStore,
-  savesecureStore,
+  saveSecureStore,
 } from "@/utills/secureStore";
-import { removeHeader, setHeader } from "@/utills/header";
-import queryClient from "@/api/queryClient";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { useEffect } from "react";
-import { queryKeys } from "@/constants";
 
-function useGetUserInfo() {
+function useGetMe() {
   const { data, isError, isSuccess } = useQuery({
-    queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
     queryFn: getUserInfo,
+    queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
   });
 
   useEffect(() => {
     (async () => {
       if (isSuccess) {
-        // 데이터를 잘 가져왔을 때
         const accessToken = await getSecureStore("accessToken");
         setHeader("Authorization", `Bearer ${accessToken}`);
       }
@@ -29,72 +28,81 @@ function useGetUserInfo() {
 
   useEffect(() => {
     if (isError) {
-      // 데이터를 잘못 가져 왔을 때
       removeHeader("Authorization");
       deleteSecureStore("accessToken");
     }
   }, [isError]);
-  return { data };
-}
 
-function useSignup() {
-  return useMutation({
-    mutationFn: postSignup,
-    onSuccess: (data) => {
-      console.log("Signup successful", data);
-      router.push("/auth/login");
-    },
-    onError: (error) => {
-      console.error("Signup failed", error);
-    },
-  });
+  return { data };
 }
 
 function useLogin() {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: async ({ accessToken }) => {
-      console.log("Login successful");
       setHeader("Authorization", `Bearer ${accessToken}`);
-      await savesecureStore("accessToken", accessToken);
-      //내정보를 가져오는 훅 호출
+      await saveSecureStore("accessToken", accessToken);
       queryClient.fetchQuery({
         queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
       });
-      router.push("/"); // Redirect to the main page
+      router.replace("/");
     },
-    onError: (error) => {
-      console.error("Login failed", error);
+    onError: () => {
+      //
     },
   });
 }
 
-function useLogout() {
-  return () => {
-    removeHeader("Authorization");
-    deleteSecureStore("accessToken");
-    queryClient.resetQueries({
-      queryKey: [queryKeys.AUTH, queryKeys.USER_INFO],
-    });
-    router.push("/auth"); // 로그아웃 후 로그인 페이지로 이동
-  };
+function useSignup() {
+  return useMutation({
+    mutationFn: postSignup,
+    onSuccess: () => router.replace("/auth/login"),
+    onError: () => {
+      //
+    },
+  });
+}
+
+function useUpdateProfile() {
+  return useMutation({
+    mutationFn: editProfile,
+    onSuccess: (newProfile) => {
+      queryClient.setQueryData(
+        [queryKeys.AUTH, queryKeys.USER_INFO],
+        newProfile
+      );
+    },
+  });
 }
 
 function useAuth() {
-  const { data } = useGetUserInfo();
-  // 한꺼번에 불러가기 위해 묶음
+  const { data } = useGetMe();
   const loginMutation = useLogin();
   const signupMutation = useSignup();
-  const logout = useLogout();
+  const profileMutation = useUpdateProfile();
+
+  const logout = () => {
+    removeHeader("Authorization");
+    deleteSecureStore("accessToken");
+    queryClient.resetQueries({ queryKey: [queryKeys.AUTH] });
+  };
+
   return {
     userInfo: {
       id: data?.id || "",
       nickname: data?.nickname || "",
       imageUri: data?.imageUri || "",
       introduce: data?.introduce || "",
+      hatId: data?.hatId || "",
+      handId: data?.handId || "",
+      skinId: data?.skinId || "",
+      topId: data?.topId || "",
+      bottomId: data?.bottomId || "",
+      faceId: data?.faceId || "",
     },
     loginMutation,
     signupMutation,
+    profileMutation,
     logout,
   };
 }

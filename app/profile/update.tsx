@@ -1,6 +1,8 @@
 import { baseUrls } from "@/api/axios";
 import CustomButton from "@/components/CustomButton";
 import FixedBottomCTA from "@/components/FixedBottomCTA";
+import IntroduceInput from "@/components/IntroduceInput";
+import NicknameInput from "@/components/NicknameInput";
 import { colors } from "@/constants";
 import useAuth from "@/hooks/qureies/useAuth";
 import { router } from "expo-router";
@@ -14,12 +16,23 @@ type FormValues = {
 };
 
 export default function ProfileUpdateScreen() {
-  const { userInfo } = useAuth();
+  const { userInfo, profileMutation } = useAuth();
   const profileForm = useForm<FormValues>({
-    defaultValues: {},
+    defaultValues: {
+      nickname: userInfo.nickname,
+      introduce: userInfo.introduce,
+    },
   });
 
-  const onSubmit = (formValues: FormValues) => {};
+  const onSubmit = (formValues: FormValues) => {
+    profileMutation.mutate(formValues, {
+      onSuccess: () =>
+        Toast.show({
+          type: "success",
+          text1: "저장되었습니다.",
+        }),
+    });
+  };
 
   return (
     <FormProvider {...profileForm}>
@@ -40,12 +53,15 @@ export default function ProfileUpdateScreen() {
           <CustomButton
             size="medium"
             variant="outlined"
-            label="프로필 이미지 변경"
+            label="프로필이미지 변경"
             style={{ position: "absolute", right: 0, bottom: 0 }}
-            onPress={() => router.push("/profile/updateProfileImage")}
+            onPress={() => router.push("/profile/avatar")}
           />
         </View>
-        <View style={styles.inputContainer}></View>
+        <View style={styles.inputContainer}>
+          <NicknameInput />
+          <IntroduceInput />
+        </View>
       </View>
 
       <FixedBottomCTA

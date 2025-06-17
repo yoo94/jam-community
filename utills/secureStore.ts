@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 
-async function savesecureStore(key: string, value: string): Promise<void> {
+async function saveSecureStore(key: string, value: string): Promise<void> {
   await SecureStore.setItemAsync(key, value);
 }
 async function getSecureStore(key: string): Promise<string | null> {
@@ -11,4 +11,4 @@ async function deleteSecureStore(key: string): Promise<void> {
   await SecureStore.deleteItemAsync(key);
 }
 
-export { savesecureStore, getSecureStore, deleteSecureStore };
+export { saveSecureStore, getSecureStore, deleteSecureStore };

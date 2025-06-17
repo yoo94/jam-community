@@ -60,6 +60,3 @@ function RootNavigation() {
     </Stack>
   );
 }
-function useReactQueryDevTools(queryClient: QueryClient) {
-  throw new Error("Function not implemented.");
-}

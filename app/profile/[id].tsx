@@ -15,7 +15,6 @@ export default function ProfileScreen() {
   const { userInfo } = useAuth();
   const { data: profile } = useGetUserProfile(Number(userId));
   const { nickname, introduce, imageUri } = profile || {};
-
   if (Number(userId) === Number(userInfo.id)) {
     return <Redirect href="/my" />;
   }
